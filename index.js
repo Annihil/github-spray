@@ -50,6 +50,11 @@ if (program.file) {
 } else if (program.text) {
     graph = new Array(dayInWeek).fill('');
     for (const l of program.text.toLowerCase()) {
+        if (!(l in alphabet)) {
+            console.warn(`'${l}' character not supported`);
+            console.log('Charset: ' + Object.keys(alphabet).join(' '));
+            return;
+        }
         const letter = alphabet[l];
         for (let i = 0; i < letter.length; i++) {
             graph[i + 1] += letter[i] + ' ';
