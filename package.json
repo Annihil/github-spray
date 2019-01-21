@@ -1,6 +1,6 @@
 {
   "name": "github-spray",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "\uD83D\uDC7E Generate spray for your GitHub contribution graph ░▒▓█",
   "main": "index.js",
   "preferGlobal": true,

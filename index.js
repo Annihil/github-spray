@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const pjson = require('./package.json');
 const execSync = require('child_process').execSync;
 const crypto = require('crypto');
 const fs = require('fs');
@@ -11,7 +12,7 @@ const alphabet = require('./alphabet');
 const secInDay = 86400, weekInYear = 53, dayInWeek = 7, title = 'github-spray';
 
 program
-    .version('1.0.2')
+    .version(pjson.version)
     .option('-s, --startdate [date]', 'Set the start date (rounded to week)')
     .option('-o, --origin [url]', 'Add origin url')
     .option('-p, --push', 'Push to origin')
@@ -93,7 +94,7 @@ for (let i = 0; i < I; i++) {
         term.bar(progress, {barStyle: term.brightWhite, innerSize: I});
         const commits = graph[j].charAt(i);
         if (commits !== ' ') {
-            const nb = parseInt(commits) - 3;
+            const nb = parseInt(commits);
             for (let k = 0; k < nb; k++) {
                 const ratio = nb / (chars.length - 1);
                 term.moveTo(i + 1, j + 1, chars[Math.round(k / ratio)]);
