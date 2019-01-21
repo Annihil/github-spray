@@ -11,7 +11,7 @@ const alphabet = require('./alphabet');
 const secInDay = 86400, weekInYear = 53, dayInWeek = 7, title = 'github-spray';
 
 program
-    .version('1.0.1')
+    .version('1.0.2')
     .option('-s, --startdate [date]', 'Set the start date (rounded to week)')
     .option('-o, --origin [url]', 'Add origin url')
     .option('-p, --push', 'Push to origin')

@@ -1,7 +1,7 @@
 {
   "name": "github-spray",
-  "version": "1.0.1",
-  "description": "Generate spray for your GitHub commit history graph",
+  "version": "1.0.2",
+  "description": "\uD83D\uDC7E Generate spray for your GitHub contribution graph ░▒▓█",
   "main": "index.js",
   "preferGlobal": true,
   "bin": {
@@ -20,6 +20,7 @@
     "graffiti",
     "spray",
     "console",
+    "cli",
     "github",
     "commit",
     "graph",

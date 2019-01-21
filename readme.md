@@ -1,6 +1,6 @@
 # GitHub Spray
 
-An utility to generate sprays for your GitHub commit graph history
+A CLI to generate sprays for your GitHub commit graph history
 
 ![](https://i.imgur.com/Of8MjPj.gif)
 
@@ -12,12 +12,19 @@ npm i -g github-spray
 
 ## Requirement
 
-- git should be installed
+- Git
+- Recent NodeJS
 
 ## Usage
 
+1. Create a new GitHub repository and copy its url
+2. 
 ```sh
-github-spray -t hello --push --origin https://github.com/XXX/yyy.git
+github-spray -t <text> --push --origin <github_repository_url>
+```
+(example)
+```sh
+github-spray -t hello --push --origin https://github.com/John/hello.git
 ```
 
 ```sh
