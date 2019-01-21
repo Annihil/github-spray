@@ -62,7 +62,7 @@ if (program.file) {
         }
     }
 } else {
-    console.warn('option --text or --file required');
+    return console.warn('option --text or --file required');
 }
 
 let seconds = startDate.unix();
