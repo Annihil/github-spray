@@ -1,0 +1,39 @@
+{
+  "name": "github-spray",
+  "version": "1.0.1",
+  "description": "Generate spray for your GitHub commit history graph",
+  "main": "index.js",
+  "preferGlobal": true,
+  "bin": {
+    "github-spray": "index.js"
+  },
+  "files": [
+    "index.js",
+    "alphabet.js"
+  ],
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Annihil/github-spray.git"
+  },
+  "keywords": [
+    "graffiti",
+    "spray",
+    "console",
+    "github",
+    "commit",
+    "graph",
+    "history",
+    "contribution"
+  ],
+  "author": "Annihil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Annihil/github-spray/issues"
+  },
+  "dependencies": {
+    "commander": "^2.19.0",
+    "moment": "^2.23.0",
+    "terminal-kit": "^1.26.10"
+  }
+}
