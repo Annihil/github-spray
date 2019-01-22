@@ -1,4 +1,6 @@
 # GitHub Spray
+[![npm](https://img.shields.io/npm/v/github-spray.svg)](https://www.npmjs.com/package/github-spray)
+[![license](https://img.shields.io/github/license/annihil/github-spray.svg)]()
 
 A CLI to generate sprays for your GitHub commit graph history
 
