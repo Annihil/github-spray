@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const pjson = require('./package.json');
 const execSync = require('child_process').execSync;
 const crypto = require('crypto');
 const fs = require('fs');
@@ -8,16 +7,18 @@ const program = require('commander');
 const moment = require('moment');
 const term = require('terminal-kit').terminal;
 
+const p = require('./package.json');
 const alphabet = require('./alphabet');
-const secInDay = 86400, weekInYear = 53, dayInWeek = 7, title = 'github-spray';
+const secInDay = 86400, weekInYear = 53, dayInWeek = 7, radix = 36;
 
 program
-    .version(pjson.version)
+    .version(p.version)
     .option('-s, --startdate [date]', 'Set the start date (rounded to week)')
     .option('-o, --origin [url]', 'Add origin url')
     .option('-p, --push', 'Push to origin')
-    .option('-f, --file [path]', 'Specify a pattern file')
+    .option('-f, --file [absolute path]', 'Specify a pattern file')
     .option('-t, --text [text]', 'Text to draw')
+    .option('-i, --invert', 'Invert the colors')
     .parse(process.argv);
 
 if (process.argv.length < 3) {
@@ -25,22 +26,21 @@ if (process.argv.length < 3) {
 }
 
 if (program.push && !program.origin) {
-    console.warn('option --origin required');
+    console.warn('Option --origin required');
 }
 
-let startDate;
+let startDate, graph;
 
 if (program.startdate) {
     startDate = moment(program.startdate);
     startDate.day(0);
+    startDate.set({hour: 0, minute: 0, second: 0, millisecond: 0});
 } else {
     startDate = moment.utc();
     startDate.set({hour: 0, minute: 0, second: 0, millisecond: 0});
     startDate.subtract(weekInYear, 'week');
     startDate.day(7);
 }
-
-let graph;
 
 if (program.file) {
     try {
@@ -49,63 +49,73 @@ if (program.file) {
         return console.error(e.message);
     }
 } else if (program.text) {
-    graph = new Array(dayInWeek).fill('');
+    graph = new Array(dayInWeek).fill(' ');
     for (const l of program.text.toLowerCase()) {
         if (!(l in alphabet)) {
             console.warn(`'${l}' character not supported`);
-            console.log('Charset: ' + Object.keys(alphabet).join(' '));
-            return;
+            return console.log('Charset: ' + Object.keys(alphabet).join(' '));
         }
         const letter = alphabet[l];
         for (let i = 0; i < letter.length; i++) {
-            graph[i + 1] += letter[i] + ' ';
+            graph[i] += letter[i] + ' ';
         }
     }
 } else {
-    return console.warn('option --text or --file required');
+    return console.warn('Option --text or --file required');
 }
 
+graph = graph.map(l => l.replace(/ /g, 0));
+
 let seconds = startDate.unix();
-const folder = 'spray-' + crypto.randomBytes(6).toString('hex');
+const folder = 'spray-' + crypto.randomBytes(6).toString('hex'), file = 'readme.md';
 fs.mkdirSync(folder);
 try {
     execSync(`git init ${folder}`);
-    execSync(`touch ${folder}/readme.md`);
-    execSync(`git -C ${folder} add readme.md`);
+    execSync(`touch ${folder}/${file}`);
+    execSync(`git -C ${folder} add ${file}`);
 } catch (e) {
     return console.error(e.message);
 }
-term.windowTitle(title);
+term.windowTitle(p.name);
 term.reset();
 
-const readme = i => `Made with [${title}](https://github.com/Annihil/${title}#${i})`;
+const readme = i => `Made with [${p.name}](${p.repository.url.slice(4, -4)}#${i})`;
 
 const I = Math.max(...graph.map(l => l.length));
 const finish = I * dayInWeek;
+
+if (program.invert) {
+    const max = Math.max(...graph.join('').split('').map(l => parseInt(l, radix)));
+    const tmp = [];
+    for (const line of graph) {
+        const reversedLine = [];
+        for (let c of line) reversedLine.push(max - parseInt(c, radix));
+        tmp.push(reversedLine.join(''));
+    }
+    graph = tmp;
+}
 
 const chars = ['░', '▒', '▓', '█'];
 
 let commit = 0;
 for (let i = 0; i < I; i++) {
     for (let j = 0; j < dayInWeek; j++) {
-        const ij = (i * dayInWeek + (j + 1));
+        const ij = i * dayInWeek + j + 1;
         const progress = ij / finish;
         term.moveTo(1, dayInWeek + 1);
         term.bar(progress, {barStyle: term.brightWhite, innerSize: I});
         const commits = graph[j].charAt(i);
-        if (commits !== ' ') {
-            const nb = parseInt(commits);
-            for (let k = 0; k < nb; k++) {
-                const ratio = nb / (chars.length - 1);
-                term.moveTo(i + 1, j + 1, chars[Math.round(k / ratio)]);
-                fs.writeFileSync(`./${folder}/readme.md`, readme(commit));
-                try {
-                    execSync(`git -C ${folder} commit --date="${seconds}" -am 'github-spray'`);
-                } catch (e) {
-                    return console.error(e.message);
-                }
-                commit++;
+        const nb = parseInt(commits, radix);
+        for (let k = 0; k < nb; k++) {
+            const ratio = nb / (chars.length - 1);
+            term.moveTo(i + 1, j + 1, chars[Math.round(k / ratio)]);
+            fs.writeFileSync(`./${folder}/${file}`, readme(commit));
+            try {
+                execSync(`git -C ${folder} commit --date="${seconds}" -am '${p.name}'`);
+            } catch (e) {
+                return console.error(e.message);
             }
+            commit++;
         }
         seconds += secInDay;
     }
@@ -125,7 +135,7 @@ if (program.origin) {
 }
 
 if (program.push) {
-    console.log(`Pushing to origin`);
+    process.stdout.write('Pushing ');
     try {
         execSync(`git -C ${folder} push -u origin master`);
     } catch (e) {

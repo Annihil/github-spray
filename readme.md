@@ -33,23 +33,29 @@ github-spray -t hello --push --origin https://github.com/John/hello.git
 github-spray --help
 ```
 
+### Invert colors
+![](https://i.imgur.com/2n5GIXh.png)
+```sh
+github-spray -t hello -i
+```
+
 ### Custom pattern
 
 To use a custom pattern, create a javascript file like follow.  
-*The numbers (1 to 9) will determine the darkness of the green.*
+*The numbers (1 to z, base 36) will determine the green's darkness.*
 ```js
 module.exports = [
-    '  999',
-    ' 9   9',
+    '  999  ',
+    ' 9   9 ',
     '9 9 9 9',
     '9     9',
     '9 999 9',
-    ' 9   9',
-    '  999'
+    ' 9   9 ',
+    '  999  '
 ];
 ```
 ```sh
-github-spray -f path/to/pattern.js ...
+github-spray -f <absolute_path/to/pattern.js> ...
 ```
 
 ### Custom start date
@@ -58,3 +64,6 @@ github-spray --startdate YYYY-MM-DD ...
 ```
 *The date will be rounded to the nearest sunday.*  
 By default the start date is the nearest sunday of the current date - 53 weeks.
+
+## Known issues
+- Before Monday 10 March 2014 there could be a [shift du to the timezone](https://github.blog/2014-03-07-timezone-aware-contribution-graphs/)
