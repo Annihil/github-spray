@@ -66,4 +66,4 @@ github-spray --startdate YYYY-MM-DD ...
 By default the start date is the nearest sunday of the current date - 53 weeks.
 
 ## Known issues
-- Before Monday 10 March 2014 there could be a [shift du to the timezone](https://github.blog/2014-03-07-timezone-aware-contribution-graphs/)
+- Before Monday 10 March 2014 there could be a [shift due to the timezone](https://github.blog/2014-03-07-timezone-aware-contribution-graphs/)
