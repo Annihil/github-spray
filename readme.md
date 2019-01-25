@@ -58,6 +58,8 @@ module.exports = [
 github-spray -f <absolute_path/to/pattern.js> ...
 ```
 
+**You can use [GitHub Spray Generator](https://annihil.github.io/github-spray-generator/) to graphically draw patterns**
+
 ### Custom start date
 ```sh
 github-spray --startdate YYYY-MM-DD ...
