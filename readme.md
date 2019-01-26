@@ -33,6 +33,17 @@ github-spray -t hello --push --origin https://github.com/John/hello.git
 github-spray --help
 ```
 
+### Fonts
+```sh
+github-spray -t <text> --font <font_name>
+```
+(example)
+```sh
+github-spray -t Wald0 --font portable_vengeance
+```
+![](https://i.imgur.com/iF2xwwU.png)  
+*Fonts available are in the fonts folder*
+
 ### Invert colors
 ![](https://i.imgur.com/2n5GIXh.png)
 ```sh
@@ -47,13 +58,14 @@ To use a custom pattern, create a javascript file like follow.
 module.exports = [
     '  444  ',
     ' 4   4 ',
-    '4 4 4 4',
+    '4 3 3 4',
     '4     4',
-    '4 444 4',
+    '4 333 4',
     ' 4   4 ',
     '  444  '
 ];
 ```
+![](https://i.imgur.com/1y2cLyv.png)
 ```sh
 github-spray -f <absolute_path/to/pattern.js> ...
 ```

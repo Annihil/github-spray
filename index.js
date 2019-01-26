@@ -3,13 +3,18 @@
 const execSync = require('child_process').execSync;
 const crypto = require('crypto');
 const fs = require('fs');
+const path = require('path');
 const program = require('commander');
 const moment = require('moment');
 const term = require('terminal-kit').terminal;
 
 const p = require('./package.json');
-const alphabet = require('./alphabet');
+let alphabet = require('./alphabet');
 const secInDay = 86400, weekInYear = 53, dayInWeek = 7;
+
+Number.prototype.map = function (in_min, in_max, out_min, out_max) {
+    return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+};
 
 program
     .version(p.version)
@@ -18,6 +23,7 @@ program
     .option('-p, --push', 'Push to origin')
     .option('-f, --file [absolute path]', 'Specify a pattern file')
     .option('-t, --text [text]', 'Text to draw')
+    .option('--font [font]', 'Set the font')
     .option('-i, --invert', 'Invert the colors')
     .option('-m, --multiplier [n]', 'Multiply each digits by n', s => parseInt(s), 1)
     .parse(process.argv);
@@ -28,6 +34,14 @@ if (process.argv.length < 3) {
 
 if (program.push && !program.origin) {
     console.warn('Option --origin required');
+}
+
+if (program.font) {
+    const fonts = fs.readdirSync(path.resolve(__dirname, 'fonts')).map(f => f.slice(0, -3));
+    if (!fonts.includes(program.font)) {
+        return console.warn(`'${program.font}' font not found!\nFonts available: ${fonts.join(' ')}`);
+    }
+    alphabet = require(`./fonts/${program.font}`);
 }
 
 let startDate, graph;
@@ -50,7 +64,7 @@ if (program.file) {
     }
 } else if (program.text) {
     graph = new Array(dayInWeek).fill(' ');
-    for (const l of program.text.toLowerCase()) {
+    for (const l of program.text) {
         if (!(l in alphabet)) {
             console.warn(`'${l}' character not supported`);
             return console.log('Charset: ' + Object.keys(alphabet).join(' '));
@@ -78,6 +92,7 @@ try {
 }
 term.windowTitle(p.name);
 term.reset();
+term.hideCursor();
 
 const readme = i => `Made with [${p.name}](${p.repository.url.slice(4, -4)}#${i})`;
 
@@ -106,8 +121,9 @@ for (let i = 0; i < I; i++) {
         term.bar(progress, {barStyle: term.brightWhite, innerSize: I});
         const n = parseInt(graph[j].charAt(i)) * program.multiplier;
         for (let k = 0; k < n; k++) {
-            const ratio = n / chars.length;
-            term.moveTo(i + 1, j + 1, chars[Math.floor(k / ratio)]);
+            let progress2 = k.map(0, n - 1, 0, chars.length - 1);
+            if (isNaN(progress2)) progress2 = chars.length - 1;
+            term.moveTo(i + 1, j + 1, chars[progress2]);
             fs.writeFileSync(`./${folder}/${file}`, readme(commit));
             try {
                 execSync(`git -C ${folder} commit --date="${seconds}" -am '${p.name}'`);
@@ -121,6 +137,7 @@ for (let i = 0; i < I; i++) {
 }
 term.moveTo(1, dayInWeek + 1);
 term.eraseLine();
+term.hideCursor(0);
 
 console.log(`${folder} generated, starting date ${startDate.format('ddd MMM DD YYYY')}`);
 
