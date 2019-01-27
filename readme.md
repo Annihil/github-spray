@@ -42,10 +42,11 @@ github-spray -t <text> --font <font_name>
 github-spray -t Wald0 --font portable_vengeance
 ```
 ![](https://i.imgur.com/iF2xwwU.png)  
+![](https://i.imgur.com/A76n04M.gif)  
 *Fonts available are in the fonts folder*
 
 ### Invert colors
-![](https://i.imgur.com/2n5GIXh.png)
+![](https://i.imgur.com/328VRba.png)
 ```sh
 github-spray -t hello -i
 ```
@@ -65,7 +66,7 @@ module.exports = [
     '  444  '
 ];
 ```
-![](https://i.imgur.com/1y2cLyv.png)
+![](https://i.imgur.com/sZDSnFH.png)
 ```sh
 github-spray -f <absolute_path/to/pattern.js> ...
 ```
