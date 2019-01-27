@@ -58,7 +58,7 @@ startDate.set({hour: 0, minute: 0, second: 0, millisecond: 0});
 
 if (program.file) {
     try {
-        graph = require(program.file);
+        graph = JSON.parse(fs.readFileSync(program.file, 'utf8'));
     } catch (e) {
         return console.error(e.message);
     }

@@ -53,22 +53,22 @@ github-spray -t hello -i
 
 ### Custom pattern
 
-To use a custom pattern, create a javascript file like follow.  
+To use a custom pattern, create a JSON file like follow.  
 *The numbers (1 to 4) will determine the green's darkness.*
-```js
-module.exports = [
-    '  444  ',
-    ' 4   4 ',
-    '4 3 3 4',
-    '4     4',
-    '4 333 4',
-    ' 4   4 ',
-    '  444  '
-];
+```json
+[
+    "  444  ",
+    " 4   4 ",
+    "4 3 3 4",
+    "4     4",
+    "4 333 4",
+    " 4   4 ",
+    "  444  "
+]
 ```
 ![](https://i.imgur.com/sZDSnFH.png)
 ```sh
-github-spray -f <absolute_path/to/pattern.js> ...
+github-spray -f <path/to/pattern.json> ...
 ```
 
 **You can use [GitHub Spray Generator](https://annihil.github.io/github-spray-generator/) to graphically draw patterns**
