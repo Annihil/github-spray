@@ -1,6 +1,6 @@
 # GitHub Spray
-[![npm](https://img.shields.io/npm/v/github-spray.svg)](https://www.npmjs.com/package/github-spray)
-[![license](https://img.shields.io/github/license/annihil/github-spray.svg)]()
+[![npm](https://img.shields.io/npm/v/github-spray.svg?style=flat-square)](https://www.npmjs.com/package/github-spray)
+[![license](https://img.shields.io/github/license/annihil/github-spray.svg?style=flat-square)]()
 
 A CLI to generate sprays for your GitHub commit graph history
 
@@ -46,6 +46,10 @@ github-spray -t Wald0 --font portable_vengeance
 github-spray -t Mario? --font mario
 ```
 ![](https://i.imgur.com/0P8Dmrn.png)  
+#### led7
+![](https://i.imgur.com/O5EW9IV.png)  
+![](https://i.imgur.com/yUaeoGL.png)  
+![](https://i.imgur.com/mvtC6sE.png)  
 ![](https://i.imgur.com/A76n04M.gif)  
 *Fonts available are in the fonts folder*
 
@@ -61,13 +65,13 @@ To use a custom pattern, create a JSON file like follow.
 *The numbers (1 to 4) will determine the green's darkness.*
 ```json
 [
-    "  444  ",
-    " 4   4 ",
-    "4 3 3 4",
-    "4     4",
-    "4 333 4",
-    " 4   4 ",
-    "  444  "
+    "  333  ",
+    " 3   3 ",
+    "3 2 2 3",
+    "3     3",
+    "3 222 3",
+    " 3   3 ",
+    "  333  "
 ]
 ```
 ![](https://i.imgur.com/sZDSnFH.png)
@@ -84,11 +88,11 @@ github-spray --startdate YYYY-MM-DD ...
 *The date will be rounded to the nearest sunday.*  
 By default the start date is the nearest sunday of the current date - 53 weeks.
 
-### Multiply every contributions
+### Multiply every commits
 ```sh
-github-spray -t toto -m <factor>
+github-spray -m <factor> ...
 ```
-Multiply each digits by the given factor
+Multiply each commits by the given factor
 
 ## Known issues
 - Before Monday 10 March 2014 there could be a [shift due to the timezone](https://github.blog/2014-03-07-timezone-aware-contribution-graphs/)
