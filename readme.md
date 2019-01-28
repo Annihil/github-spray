@@ -42,6 +42,10 @@ github-spray -t <text> --font <font_name>
 github-spray -t Wald0 --font portable_vengeance
 ```
 ![](https://i.imgur.com/iF2xwwU.png)  
+```sh
+github-spray -t Mario? --font mario
+```
+![](https://i.imgur.com/0P8Dmrn.png)  
 ![](https://i.imgur.com/A76n04M.gif)  
 *Fonts available are in the fonts folder*
 
