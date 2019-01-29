@@ -26,12 +26,13 @@ npm i -g github-spray
 1. Create a new GitHub repository and copy its url
 2. 
 ```sh
-github-spray -t <text> --push --origin <github_repository_url>
+github-spray -t <text> --multiplier <factor> --push --origin <github_repository_url>
 ```
 (example)
 ```sh
-github-spray -t hello --push --origin https://github.com/John/hello.git
+github-spray -t hello --multiplier 10 --push --origin https://github.com/John/hello.git
 ```
+_Depending on your number of contributions on the given period that you want to spray, you will need to multiply the number of commit per day by a specific factor (--multiplier) so that the spray become more relevant on your calendar heatmap_.  
 
 ```sh
 github-spray --help
@@ -66,7 +67,7 @@ github-spray -t hello -i
 ### Custom pattern
 
 To use a custom pattern, create a JSON file like follow.  
-*The numbers (1 to 4) will determine the green's darkness.*
+*The numbers (1 to 4) will determine the number of commit per day, and thus the green's darkness.*
 ```json
 [
     "  333  ",
@@ -92,11 +93,11 @@ github-spray --startdate YYYY-MM-DD ...
 *The date will be rounded to the nearest sunday.*  
 By default the start date is the nearest sunday of the current date - 53 weeks.
 
-### Multiply every commits
+### Multiplier: scale colors
 ```sh
 github-spray -m <factor> ...
 ```
-Multiply each commits by the given factor
+Multiply the number of commit per day by the given factor to make the spray darker or brighter on your calendar heatmap. 
 
 ## Known issues
 - Before Monday 10 March 2014 there could be a [shift due to the timezone](https://github.blog/2014-03-07-timezone-aware-contribution-graphs/)

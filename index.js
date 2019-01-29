@@ -25,7 +25,7 @@ program
     .option('-t, --text [text]', 'Text to draw')
     .option('--font [font]', 'Set the font')
     .option('-i, --invert', 'Invert the colors')
-    .option('-m, --multiplier [n]', 'Multiply each digits by n', s => parseInt(s), 1)
+    .option('-m, --multiplier [n]', 'Multiply the number of commits by n', s => parseInt(s), 1)
     .parse(process.argv);
 
 if (process.argv.length < 3) {
@@ -43,6 +43,7 @@ if (program.font) {
     }
     alphabet = require(`./fonts/${program.font}`);
 }
+alphabet[' '] = alphabet[' '] || new Array(dayInWeek).fill(' ');
 
 let startDate, graph;
 
