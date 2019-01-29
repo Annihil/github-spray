@@ -2,6 +2,10 @@
 [![npm](https://img.shields.io/npm/v/github-spray.svg?style=flat-square)](https://www.npmjs.com/package/github-spray)
 [![license](https://img.shields.io/github/license/annihil/github-spray.svg?style=flat-square)]()
 
+<p align="center">
+	<img src="https://i.imgur.com/nPZyGNo.gif" height="200" width="200" alt="GitHub Spray logo"/>
+</p>
+
 A CLI to generate sprays for your GitHub commit graph history
 
 ![](https://i.imgur.com/Of8MjPj.gif)
