@@ -26,6 +26,8 @@ program
     .option('--font [font]', 'Set the font')
     .option('-i, --invert', 'Invert the colors')
     .option('-m, --multiplier [n]', 'Multiply the number of commits by n', s => parseInt(s), 1)
+    .option('--flipvertical', 'Flip vertically the spray')
+    .option('--fliphorizontal', 'Flip horizontally the spray')
     .parse(process.argv);
 
 if (process.argv.length < 3) {
@@ -45,7 +47,7 @@ if (program.font) {
 }
 alphabet[' '] = alphabet[' '] || new Array(dayInWeek).fill(' ');
 
-let startDate, graph;
+let startDate, pattern;
 
 if (program.startdate) {
     startDate = moment(program.startdate);
@@ -59,27 +61,28 @@ startDate.set({hour: 0, minute: 0, second: 0, millisecond: 0});
 
 if (program.file) {
     try {
-        graph = JSON.parse(fs.readFileSync(program.file, 'utf8'));
+        pattern = JSON.parse(fs.readFileSync(program.file, 'utf8'));
     } catch (e) {
         return console.error(e.message);
     }
 } else if (program.text) {
-    graph = new Array(dayInWeek).fill(' ');
+    pattern = new Array(dayInWeek).fill(' ');
     for (const l of program.text) {
         if (!(l in alphabet)) {
             console.warn(`'${l}' character not supported`);
-            return console.log('Charset: ' + Object.keys(alphabet).join(' '));
+            return console.info('Charset: ' + Object.keys(alphabet).join(' '));
         }
         const letter = alphabet[l];
         for (let i = 0; i < letter.length; i++) {
-            graph[i] += letter[i] + ' ';
+            pattern[i] += letter[i] + ' ';
         }
     }
 } else {
     return console.warn('Option --text or --file required');
 }
 
-graph = graph.map(l => l.replace(/ /g, 0));
+pattern = pattern.map(l => l.replace(/ /g, 0));
+let matrix = pattern.map(line => line.split('').map(c => parseInt(c)));
 
 let seconds = startDate.unix();
 const folder = 'spray-' + crypto.randomBytes(6).toString('hex'), file = 'readme.md';
@@ -97,18 +100,19 @@ term.hideCursor();
 
 const readme = i => `Made with [${p.name}](${p.repository.url.slice(4, -4)}#${i})`;
 
-const I = Math.max(...graph.map(l => l.length));
+const I = Math.max(...matrix.map(l => l.length));
 const finish = I * dayInWeek;
 
 if (program.invert) {
-    const max = Math.max(...graph.join('').split('').map(l => parseInt(l)));
-    const tmp = [];
-    for (const line of graph) {
-        const reversedLine = [];
-        for (let c of line) reversedLine.push(max - parseInt(c));
-        tmp.push(reversedLine.join(''));
-    }
-    graph = tmp;
+    const max = Math.max(...matrix.flat());
+    matrix = matrix.map(line => line.map(c => max - c));
+}
+
+if (program.fliphorizontal) {
+    matrix = matrix.map(line => line.reverse());
+}
+if (program.flipvertical) {
+    matrix = matrix.reverse();
 }
 
 const chars = ['░', '▒', '▓', '█'];
@@ -120,7 +124,7 @@ for (let i = 0; i < I; i++) {
         const progress = ij / finish;
         term.moveTo(1, dayInWeek + 1);
         term.bar(progress, {barStyle: term.brightWhite, innerSize: I});
-        const n = parseInt(graph[j].charAt(i)) * program.multiplier;
+        const n = matrix[j][i] * program.multiplier;
         for (let k = 0; k < n; k++) {
             let progress2 = k.map(0, n - 1, 0, chars.length - 1);
             if (isNaN(progress2)) progress2 = chars.length - 1;
@@ -140,10 +144,10 @@ term.moveTo(1, dayInWeek + 1);
 term.eraseLine();
 term.hideCursor(0);
 
-console.log(`${folder} generated, starting date ${startDate.format('ddd MMM DD YYYY')}`);
+console.info(`${folder} generated, starting date ${startDate.format('ddd MMM DD YYYY')}`);
 
 if (program.origin) {
-    console.log(`Adding origin ${program.origin}`);
+    console.info(`Adding origin ${program.origin}`);
     try {
         execSync(`git -C ${folder} remote add origin ${program.origin}`);
     } catch (e) {

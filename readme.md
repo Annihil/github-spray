@@ -59,9 +59,21 @@ github-spray -t Mario? --font mario
 *Fonts available are in the fonts folder*
 
 ### Invert colors
-![](https://i.imgur.com/328VRba.png)
+![](https://i.imgur.com/rgSownU.png)
 ```sh
 github-spray -t hello -i
+```
+
+### Flip vertical
+![](https://i.imgur.com/xHNnAGb.png)
+```sh
+github-spray -t hello --flipvertical
+```
+
+### Flip horizontal
+![](https://i.imgur.com/LMtZGAr.png)
+```sh
+github-spray -t hello --fliphorizontal
 ```
 
 ### Custom pattern
