@@ -1,9 +1,7 @@
 {
   "name": "github-spray",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "\uD83D\uDC7E Generate spray for your GitHub contribution graph ░▒▓█",
-  "main": "index.js",
-  "preferGlobal": true,
   "bin": {
     "github-spray": "index.js"
   },
@@ -12,7 +10,6 @@
     "alphabet.js",
     "fonts"
   ],
-  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Annihil/github-spray.git"
@@ -20,13 +17,14 @@
   "keywords": [
     "graffiti",
     "spray",
-    "console",
     "cli",
     "github",
     "commit",
     "graph",
     "history",
-    "contribution"
+    "contribution",
+    "calendar",
+    "heatmap"
   ],
   "author": "Annihil",
   "license": "MIT",
