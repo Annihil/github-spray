@@ -6,7 +6,7 @@
 	<img src="https://i.imgur.com/nPZyGNo.gif" height="200" width="200" alt="GitHub Spray logo"/>
 </p>
 
-A CLI to generate sprays for your GitHub commit graph history
+A CLI to generate sprays for your GitHub contribution history graph
 
 ![](https://i.imgur.com/Of8MjPj.gif)
 
@@ -16,7 +16,7 @@ A CLI to generate sprays for your GitHub commit graph history
 npm i -g github-spray
 ```
 
-## Requirement
+## Requirements
 
 - Git
 - Recent NodeJS

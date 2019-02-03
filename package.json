@@ -1,7 +1,7 @@
 {
   "name": "github-spray",
-  "version": "1.0.17",
-  "description": "\uD83D\uDC7E Generate spray for your GitHub contribution graph ░▒▓█",
+  "version": "1.0.18",
+  "description": "\uD83D\uDC7E Draw on your GitHub contribution graph ░▒▓█",
   "bin": {
     "github-spray": "index.js"
   },
@@ -10,21 +10,21 @@
     "alphabet.js",
     "fonts"
   ],
+  "homepage": "https://github.com/Annihil/github-spray",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Annihil/github-spray.git"
+    "url": "https://github.com/Annihil/github-spray.git"
   },
   "keywords": [
     "graffiti",
     "spray",
     "cli",
     "github",
-    "commit",
     "graph",
-    "history",
     "contribution",
     "calendar",
-    "heatmap"
+    "heatmap",
+    "art"
   ],
   "author": "Annihil",
   "license": "MIT",
@@ -35,5 +35,7 @@
     "commander": "^2.19.0",
     "moment": "^2.23.0",
     "terminal-kit": "^1.26.10"
-  }
+  },
+  "logo": "https://i.imgur.com/LhPXoTd.gif",
+  "badge": "https://img.shields.io/badge/Made%20With-Github%20Spray-lightgrey.svg?style=for-the-badge&logo=github"
 }

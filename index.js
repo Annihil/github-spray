@@ -8,13 +8,11 @@ const program = require('commander');
 const moment = require('moment');
 const term = require('terminal-kit').terminal;
 
-const p = require('./package.json');
+const p = require('./package.json'),
+    dayInWeek = 7, chars = ['░', '▒', '▓', '█'],
+    mapRange = (x, inMin, inMax, outMin, outMax) => (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin,
+    readme = i => `[![](${p.badge})](${p.homepage}#${i})  \n[![](https://i.imgur.com/LhPXoTd.gif)](${p.homepage})`;
 let alphabet = require('./alphabet');
-const secInDay = 86400, weekInYear = 53, dayInWeek = 7;
-
-Number.prototype.map = function (in_min, in_max, out_min, out_max) {
-    return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-};
 
 program
     .version(p.version)
@@ -54,17 +52,13 @@ if (program.startdate) {
     startDate.day(0);
 } else {
     startDate = moment.utc();
-    startDate.subtract(weekInYear, 'week');
+    startDate.subtract(53, 'week');
     startDate.day(7);
 }
 startDate.set({hour: 0, minute: 0, second: 0, millisecond: 0});
 
 if (program.file) {
-    try {
-        pattern = JSON.parse(fs.readFileSync(program.file, 'utf8'));
-    } catch (e) {
-        return console.error(e.message);
-    }
+    pattern = JSON.parse(fs.readFileSync(program.file, 'utf8'));
 } else if (program.text) {
     pattern = new Array(dayInWeek).fill(' ');
     for (const l of program.text) {
@@ -87,57 +81,40 @@ let matrix = pattern.map(line => line.split('').map(c => parseInt(c)));
 let seconds = startDate.unix();
 const folder = 'spray-' + crypto.randomBytes(6).toString('hex'), file = 'readme.md';
 fs.mkdirSync(folder);
-try {
-    execSync(`git init ${folder}`);
-    execSync(`touch ${folder}/${file}`);
-    execSync(`git -C ${folder} add ${file}`);
-} catch (e) {
-    return console.error(e.message);
-}
+execSync(`git init ${folder}`);
+execSync(`touch ${folder}/${file}`);
+execSync(`git -C ${folder} add ${file}`);
 term.windowTitle(p.name);
 term.reset();
 term.hideCursor();
 
-const readme = i => `Made with [${p.name}](${p.repository.url.slice(4, -4)}#${i})`;
-
-const I = Math.max(...matrix.map(l => l.length));
-const finish = I * dayInWeek;
+const maxWeeks = Math.max(...matrix.map(line => line.length)), area = maxWeeks * dayInWeek;
 
 if (program.invert) {
     const max = Math.max(...matrix.flat());
     matrix = matrix.map(line => line.map(c => max - c));
 }
 
-if (program.fliphorizontal) {
-    matrix = matrix.map(line => line.reverse());
-}
-if (program.flipvertical) {
-    matrix = matrix.reverse();
-}
+if (program.fliphorizontal) matrix = matrix.map(line => line.reverse());
+if (program.flipvertical) matrix = matrix.reverse();
 
-const chars = ['░', '▒', '▓', '█'];
-
-let commit = 0;
-for (let i = 0; i < I; i++) {
-    for (let j = 0; j < dayInWeek; j++) {
-        const ij = i * dayInWeek + j + 1;
-        const progress = ij / finish;
+let commits = 0;
+for (let week = 0; week < maxWeeks; week++) {
+    for (let day = 0; day < dayInWeek; day++) {
+        const dayPassed = week * dayInWeek + day + 1;
+        const progress = dayPassed / area;
         term.moveTo(1, dayInWeek + 1);
-        term.bar(progress, {barStyle: term.brightWhite, innerSize: I});
-        const n = matrix[j][i] * program.multiplier;
-        for (let k = 0; k < n; k++) {
-            let progress2 = k.map(0, n - 1, 0, chars.length - 1);
+        term.bar(progress, {barStyle: term.brightWhite, innerSize: maxWeeks});
+        const commitsPerDay = matrix[day][week] * program.multiplier;
+        for (let commit = 0; commit < commitsPerDay; commit++) {
+            let progress2 = mapRange(commit, 0, commitsPerDay - 1, 0, chars.length - 1);
             if (isNaN(progress2)) progress2 = chars.length - 1;
-            term.moveTo(i + 1, j + 1, chars[progress2]);
-            fs.writeFileSync(`./${folder}/${file}`, readme(commit));
-            try {
-                execSync(`git -C ${folder} commit --date="${seconds}" -am '${p.name}'`);
-            } catch (e) {
-                return console.error(e.message);
-            }
-            commit++;
+            term.moveTo(week + 1, day + 1, chars[progress2]);
+            fs.writeFileSync(`./${folder}/${file}`, readme(commits));
+            execSync(`git -C ${folder} commit --date="${seconds}" -am '${p.name}'`);
+            commits++;
         }
-        seconds += secInDay;
+        seconds += 24 * 60 * 60;
     }
 }
 term.moveTo(1, dayInWeek + 1);
@@ -148,18 +125,10 @@ console.info(`${folder} generated, starting date ${startDate.format('ddd MMM DD 
 
 if (program.origin) {
     console.info(`Adding origin ${program.origin}`);
-    try {
-        execSync(`git -C ${folder} remote add origin ${program.origin}`);
-    } catch (e) {
-        return console.error(e.message);
-    }
+    execSync(`git -C ${folder} remote add origin ${program.origin}`);
 }
 
 if (program.push) {
     process.stdout.write('Pushing ');
-    try {
-        execSync(`git -C ${folder} push -u origin master`);
-    } catch (e) {
-        console.error(e.message);
-    }
+    execSync(`git -C ${folder} push -u origin master`);
 }
