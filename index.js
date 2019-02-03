@@ -11,7 +11,7 @@ const term = require('terminal-kit').terminal;
 const p = require('./package.json'),
     dayInWeek = 7, chars = ['░', '▒', '▓', '█'],
     mapRange = (x, inMin, inMax, outMin, outMax) => (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin,
-    readme = i => `[![](${p.badge})](${p.homepage}#${i})  \n[![](https://i.imgur.com/LhPXoTd.gif)](${p.homepage})`;
+    readme = i => `[![](${p.badge})](${p.homepage}#${i})  \n[![](${p.logo})](${p.homepage})`;
 let alphabet = require('./alphabet');
 
 program

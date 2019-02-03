@@ -1,6 +1,6 @@
 {
   "name": "github-spray",
-  "version": "1.0.18",
+  "version": "1.0.21",
   "description": "\uD83D\uDC7E Draw on your GitHub contribution graph ░▒▓█",
   "bin": {
     "github-spray": "index.js"
@@ -36,6 +36,6 @@
     "moment": "^2.23.0",
     "terminal-kit": "^1.26.10"
   },
-  "logo": "https://i.imgur.com/LhPXoTd.gif",
+  "logo": "https://i.imgur.com/2DrTn0Z.gif",
   "badge": "https://img.shields.io/badge/Made%20With-Github%20Spray-lightgrey.svg?style=for-the-badge&logo=github"
 }
