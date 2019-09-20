@@ -1,7 +1,7 @@
 {
   "name": "github-spray",
-  "version": "1.0.21",
-  "description": "\uD83D\uDC7E Draw on your GitHub contribution graph ░▒▓█",
+  "version": "1.1.0",
+  "description": "👾 Draw on your GitHub contribution graph ░▒▓█",
   "bin": {
     "github-spray": "index.js"
   },
@@ -24,7 +24,8 @@
     "contribution",
     "calendar",
     "heatmap",
-    "art"
+    "art",
+    "pixel-art"
   ],
   "author": "Annihil",
   "license": "MIT",
