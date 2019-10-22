@@ -96,6 +96,11 @@ To use a custom pattern, create a JSON file like follow.
 github-spray -f <path/to/pattern.json> ...
 ```
 
+![](https://i.imgur.com/QDxcot7.png)
+```sh
+github-spray -f patterns/space-invaders.json ...
+```
+
 **You can use [GitHub Spray Generator](https://annihil.github.io/github-spray-generator/) to graphically draw patterns**
 
 ### Custom start date
