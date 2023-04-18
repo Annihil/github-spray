@@ -130,5 +130,5 @@ if (program.origin) {
 
 if (program.push) {
 	process.stdout.write('Pushing ');
-	execSync(`git -C ${folder} push ${program.force ? '--force' : ''} -u origin master`);
+	execSync(`git -C ${folder} push ${program.force ? '--force' : ''} -u origin main`);
 }
